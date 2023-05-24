@@ -1,0 +1,84 @@
+#!/usr/bin/env php
+<?php
+
+if (ini_get('phar.readonly') === '1') {
+    throw new \Exception('Writing to phar files is disabled. Change your `php.ini` or append `-d phar.readonly=false` to the shebang, if supported by your `env` executable.');
+}
+
+define('__ROOT__', realpath(__DIR__ . '/..'));
+chdir(__ROOT__);
+
+$opt = getopt('v:', ['nozip']);
+
+$version = $opt['v'] ?? null;
+if (empty($version)) {
+    echo "Please, specify version as \"-v7.0.0-beta.42\".\n";
+    exit(1);
+}
+if (!preg_match('/^\d+\.\d+\.\d+(\-\w+(\.\d+)?)?$/', $version)) {
+    echo "Version must be \"7.0.0-beta.42\". Got \"$version\".\n";
+    exit(1);
+}
+
+`composer install --no-dev --prefer-dist --optimize-autoloader`;
+
+$pharName = "phpcpd.phar";
+$pharFile = __ROOT__ . '/' . $pharName;
+if (file_exists($pharFile)) {
+    unlink($pharFile);
+}
+
+$ignore = [
+    '.git',
+    'Tests',
+    'tests',
+    'phpcpd',
+    '.php-cs-fixer.dist.php'
+];
+
+$phar = new \Phar($pharFile, 0, $pharName);
+$phar->setSignatureAlgorithm(\Phar::SHA512);
+$phar->startBuffering();
+$iterator = new RecursiveDirectoryIterator(__ROOT__, FilesystemIterator::SKIP_DOTS);
+$iterator = new RecursiveCallbackFilterIterator($iterator, function (SplFileInfo $fileInfo) use ($ignore) {
+    return !in_array($fileInfo->getBasename(), $ignore, true);
+});
+$iterator = new RecursiveIteratorIterator($iterator);
+$iterator = new CallbackFilterIterator($iterator, function (SplFileInfo $fileInfo) {
+    return in_array($fileInfo->getExtension(), ['php', 'exe'], true);
+});
+
+foreach ($iterator as $fileInfo) {
+    $file = str_replace(__ROOT__, '', $fileInfo->getRealPath());
+    echo "Add file: " . $file . "\n";
+    $phar->addFile($fileInfo->getRealPath(), $file);
+
+    if (!array_key_exists('nozip', $opt)) {
+        $phar[$file]->compress(Phar::GZ);
+
+        if (!$phar[$file]->isCompressed()) {
+            echo "Could not compress File: $file\n";
+        }
+    }
+}
+
+
+// Add phpcpd file
+echo "Add file: phpcpd\n";
+$depContent = file_get_contents(__ROOT__ . '/phpcpd');
+$depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
+$depContent = str_replace('__FILE__', 'str_replace("phar://", "", Phar::running())', $depContent);
+$depContent = preg_replace("/run\('.+?'/", "run('$version'", $depContent);
+$phar->addFromString('phpcpd', $depContent);
+$phar->setStub(<<<STUB
+#!/usr/bin/env php
+<?php
+Phar::mapPhar('{$pharName}');
+require 'phar://{$pharName}/phpcpd';
+__HALT_COMPILER();
+STUB
+);
+$phar->stopBuffering();
+unset($phar);
+
+echo "$pharName was created successfully.\n";

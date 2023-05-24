@@ -1,0 +1,78 @@
+name: "Release"
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  contents: read
+
+env:
+  COMPOSER_FLAGS: "--ansi --no-interaction --no-progress --no-suggest --prefer-dist"
+
+jobs:
+  build:
+    permissions:
+      contents: write # for actions/create-release to create a release
+    name: Upload Release Asset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          coverage: "none"
+          extensions: dom, mbstring
+          ini-values: "memory_limit=-1"
+          php-version: "8.1"
+
+      - name: "Install dependencies"
+        run: "composer install ${{ env.COMPOSER_FLAGS }}"
+
+      - name: Build phar file
+        run: "php -d phar.readonly=0 bin/compile"
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: true
+          body: TODO
+
+      - name: Upload phar
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./phpcpd.phar
+          asset_name: phpcpd.phar
+          asset_content_type: application/octet-stream
+
+      - name: Configure GPG key and sign phar
+        run: |
+          mkdir -p ~/.gnupg/
+          chmod 0700 ~/.gnupg/
+          echo "$GPG_SIGNING_KEY" | base64 --decode > ~/.gnupg/private.key
+          gpg --import ~/.gnupg/private.key
+          gpg -u matthias@krauser.eu --detach-sign --output phpcpd.phar.asc phpcpd.phar
+        env:
+          GPG_SIGNING_KEY: |
+            ${{ secrets.GPG_KEY_F138B027D6496DC34D240C91C8EF58C033241785 }}
+
+      - name: Upload phar signature
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./phpcpd.phar.asc
+          asset_name: phpcpd.phar.asc
+          asset_content_type: application/octet-stream
