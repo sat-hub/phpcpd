@@ -14,6 +14,9 @@ use function count;
 use function usort;
 use Iterator;
 
+/**
+ * @template-implements Iterator<CodeClone>
+ */
 final class CodeCloneMapIterator implements Iterator
 {
     /**

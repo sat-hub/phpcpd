@@ -46,6 +46,11 @@ final class Arguments
 
     private int $headEquality;
 
+    /**
+     * @param list<string> $directories
+     * @param list<string> $suffixes
+     * @param list<string> $exclude
+     */
     public function __construct(array $directories, array $suffixes, array $exclude, ?string $pmdCpdXmlLogfile, int $linesThreshold, int $tokensThreshold, bool $fuzzy, bool $verbose, bool $help, bool $version, ?string $algorithm, int $editDistance, int $headEquality)
     {
         $this->directories      = $directories;

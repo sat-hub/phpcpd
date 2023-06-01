@@ -15,6 +15,7 @@ use SebastianBergmann\CliParser\Parser as CliParser;
 final class ArgumentsBuilder
 {
     /**
+     * @param list<string> $argv
      * @throws ArgumentsBuilderException
      */
     public function build(array $argv): Arguments
@@ -41,13 +42,15 @@ final class ArgumentsBuilder
         } catch (CliParserException $e) {
             throw new ArgumentsBuilderException(
                 $e->getMessage(),
-                (int) $e->getCode(),
+                $e->getCode(),
                 $e
             );
         }
 
+        /** @var list<string> $directories */
         $directories      = $options[1];
         $exclude          = [];
+        /** @var list<string> $suffixes */
         $suffixes         = ['.php'];
         $pmdCpdXmlLogfile = null;
         $linesThreshold   = 5;
@@ -60,13 +63,14 @@ final class ArgumentsBuilder
         $version          = false;
         $algorithm        = 'rabin-karp';
 
+        /** @var array{0: string, 1: string} $option */
         foreach ($options[0] as $option) {
+
             switch ($option[0]) {
                 case '--suffix':
                     $suffixes[] = $option[1];
 
                     break;
-
                 case '--exclude':
                     $exclude[] = $option[1];
 
@@ -120,7 +124,7 @@ final class ArgumentsBuilder
                     break;
 
                 case '--algorithm':
-                    $algorithm = (string) $option[1];
+                    $algorithm = $option[1];
 
                     break;
             }

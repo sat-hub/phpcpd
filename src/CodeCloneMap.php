@@ -15,6 +15,9 @@ use function sprintf;
 use Countable;
 use IteratorAggregate;
 
+/**
+ * @template-implements IteratorAggregate<CodeClone>
+ */
 final class CodeCloneMap implements Countable, IteratorAggregate
 {
     /**

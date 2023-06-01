@@ -1,8 +1,10 @@
 # https://help.github.com/en/categories/automating-your-workflow-with-github-actions
 
 on:
-  - "pull_request"
-  - "push"
+  "pull_request": ~
+  "push":
+    branches:
+      - 'main'
 
 name: "CI"
 
@@ -36,7 +38,7 @@ jobs:
         with:
           php-version: "${{ matrix.php-version }}"
           coverage: "pcov"
-          tools: composer, php-cs-fixer, psalm:4.x
+          tools: composer:2.5.x, php-cs-fixer:3.17.x, psalm:5.12.x
 
       - name: "Update dependencies with composer"
         run: "composer update --no-ansi --no-interaction --no-progress"

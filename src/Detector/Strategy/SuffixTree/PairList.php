@@ -53,11 +53,7 @@ class PairList
      */
     private $secondElements;
 
-    /**
-     * @param S $firstType
-     * @param T $secondType
-     */
-    public function __construct(int $initialCapacity, $firstType, $secondType)
+    public function __construct(int $initialCapacity)
     {
         if ($initialCapacity < 1) {
             $initialCapacity = 1;

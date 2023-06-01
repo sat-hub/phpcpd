@@ -28,6 +28,9 @@ final class Application
 {
     private const VERSION = '7.0';
 
+    /**
+     * @param list<string> $argv
+     */
     public function run(array $argv): int
     {
         $this->printVersion();

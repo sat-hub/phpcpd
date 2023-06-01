@@ -21,6 +21,7 @@ final class Detector
         $this->strategy = $strategy;
     }
 
+    /** @param list<string> $files */
     public function copyPasteDetection(iterable $files): CodeCloneMap
     {
         $result = new CodeCloneMap;

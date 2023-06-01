@@ -452,7 +452,8 @@ class ApproximateCloneDetectingSuffixTree extends SuffixTree
         }
 
         // NB: 0 and 0 are two indicate the template S and T for Psalm, in lack of generics.
-        $otherClones = new PairList(16, 0, 0);
+        /** @var PairList<int, int> $otherClones */
+        $otherClones = new PairList(16);
         $this->findRemainingClones(
             $otherClones,
             $nodeWordLength,
