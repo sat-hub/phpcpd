@@ -14,6 +14,7 @@ use SebastianBergmann\PHPCPD\ArgumentsBuilder;
 use SebastianBergmann\PHPCPD\Detector\Strategy\DefaultStrategy;
 use SebastianBergmann\PHPCPD\Detector\Strategy\StrategyConfiguration;
 use SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTreeStrategy;
+use Symfony\Component\Finder\Finder;
 
 /**
  * @covers \SebastianBergmann\PHPCPD\Arguments
@@ -45,10 +46,7 @@ final class EditDistanceTest extends TestCase
         $strategy  = new SuffixTreeStrategy($config);
 
         $clones = (new Detector($strategy))->copyPasteDetection(
-            [
-                __DIR__ . '/../fixture/editdistance1.php',
-                __DIR__ . '/../fixture/editdistance2.php',
-            ],
+            (new Finder())->in(__DIR__ . '/../fixture')->name('editdistance[1|2].php')
         );
 
         $clones = $clones->clones();
@@ -63,10 +61,7 @@ final class EditDistanceTest extends TestCase
         $strategy  = new DefaultStrategy($config);
 
         $clones = (new Detector($strategy))->copyPasteDetection(
-            [
-                __DIR__ . '/../fixture/editdistance1.php',
-                __DIR__ . '/../fixture/editdistance2.php',
-            ],
+            (new Finder())->in(__DIR__ . '/../fixture')->name('editdistance[1|2].php')
         );
 
         $clones = $clones->clones();

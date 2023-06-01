@@ -4,6 +4,10 @@ All notable changes in PHPCPD are documented in this file using the [Keep a CHAN
 
 ## [7.0.0] - 2022-MM-DD
 
+### Changed
+
+* [#2](https://github.com/mkrauser/phpcpd/pull/2) Use Symfony Finder to iterate over files
+
 ### Added
 
 * [#199](https://github.com/sebastianbergmann/phpcpd/pull/199): Suffix Tree-based algorithm for code clone detection

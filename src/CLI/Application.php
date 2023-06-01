@@ -12,7 +12,6 @@ namespace SebastianBergmann\PHPCPD;
 use const PHP_EOL;
 use function count;
 use function printf;
-use SebastianBergmann\FileIterator\Facade;
 use SebastianBergmann\PHPCPD\Detector\Detector;
 use SebastianBergmann\PHPCPD\Detector\Strategy\AbstractStrategy;
 use SebastianBergmann\PHPCPD\Detector\Strategy\DefaultStrategy;
@@ -23,6 +22,7 @@ use SebastianBergmann\PHPCPD\Log\Text;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
 use SebastianBergmann\Timer\Timer;
 use SebastianBergmann\Version;
+use Symfony\Component\Finder\Finder;
 
 final class Application
 {
@@ -55,14 +55,12 @@ final class Application
             return 0;
         }
 
-        $files = (new Facade)->getFilesAsArray(
-            $arguments->directories(),
-            $arguments->suffixes(),
-            '',
-            $arguments->exclude()
-        );
+        $files = (new Finder())->in($arguments->directories())
+            ->notPath($arguments->exclude())
+            ->files()
+            ->name($arguments->suffixes());
 
-        if (empty($files)) {
+        if (iterator_count($files) == 0) {
             print 'No files found to scan' . PHP_EOL;
 
             return 1;
@@ -118,13 +116,14 @@ final class Application
     {
         print <<<'EOT'
 Usage:
-  phpcpd [options] <directory>
+  phpcpd [options] <directories>
 
 Options for selecting files:
 
   --suffix <suffix> Include files with names ending in <suffix> in the analysis
-                    (default: .php; can be given multiple times)
+                    (default: *.php; can be given multiple times)
   --exclude <path>  Exclude files with <path> in their path from the analysis
+                    The patterns given need to be relative to the analyzed paths
                     (can be given multiple times)
 
 Options for analysing files:

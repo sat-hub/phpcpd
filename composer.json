@@ -25,11 +25,11 @@
     "require": {
         "php": ">=8.1",
         "ext-dom": "*",
+        "ext-mbstring": "*",
+        "phpunit/php-timer": "^6.0",
         "sebastian/cli-parser": "^2.0",
         "sebastian/version": "^4.0",
-        "phpunit/php-file-iterator": "^4.0",
-        "phpunit/php-timer": "^6.0",
-        "ext-mbstring": "*"
+        "symfony/finder": "^6.3"
     },
     "autoload": {
         "classmap": [
