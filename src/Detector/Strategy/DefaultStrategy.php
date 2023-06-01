@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\PHPCPD\Detector\Strategy;
 
 use const T_VARIABLE;
@@ -47,13 +46,13 @@ final class DefaultStrategy extends AbstractStrategy
 
     public function processFile(string $file, CodeCloneMap $result): void
     {
-        $buffer = file_get_contents($file);
-        $currentTokenPositions = [];
+        $buffer                    = file_get_contents($file);
+        $currentTokenPositions     = [];
         $currentTokenRealPositions = [];
-        $currentSignature = '';
-        $tokens = token_get_all($buffer);
-        $tokenNr = 0;
-        $lastTokenLine = 0;
+        $currentSignature          = '';
+        $tokens                    = token_get_all($buffer);
+        $tokenNr                   = 0;
+        $lastTokenLine             = 0;
 
         $result->addToNumberOfLines(substr_count($buffer, "\n"));
 
@@ -85,18 +84,18 @@ final class DefaultStrategy extends AbstractStrategy
             }
         }
 
-        $count = count($currentTokenPositions);
-        $firstLine = 0;
+        $count         = count($currentTokenPositions);
+        $firstLine     = 0;
         $firstRealLine = 0;
-        $found = false;
-        $tokenNr = 0;
-        $firstHash = "";
-        $firstToken = 0;
+        $found         = false;
+        $tokenNr       = 0;
+        $firstHash     = '';
+        $firstToken    = 0;
         /** @var int<0, max> */
         $lastToken = 0;
 
         while ($tokenNr <= $count - $this->config->minTokens()) {
-            $line = $currentTokenPositions[$tokenNr];
+            $line     = $currentTokenPositions[$tokenNr];
             $realLine = $currentTokenRealPositions[$tokenNr];
 
             $hash = substr(
@@ -116,20 +115,20 @@ final class DefaultStrategy extends AbstractStrategy
                 $found = true;
 
                 if ($firstLine === 0) {
-                    $firstLine = $line;
+                    $firstLine     = $line;
                     $firstRealLine = $realLine;
-                    $firstHash = $hash;
-                    $firstToken = $tokenNr;
+                    $firstHash     = $hash;
+                    $firstToken    = $tokenNr;
                 }
             } else {
                 if ($found) {
-                    $fileA = $this->hashes[$firstHash][0];
+                    $fileA      = $this->hashes[$firstHash][0];
                     $firstLineA = $this->hashes[$firstHash][1];
                     /** @var int $lastToken */
-                    $lastToken = ($tokenNr - 1) + $this->config->minTokens() - 1;
-                    $lastLine = $currentTokenPositions[$lastToken];
+                    $lastToken    = ($tokenNr - 1) + $this->config->minTokens() - 1;
+                    $lastLine     = $currentTokenPositions[$lastToken];
                     $lastRealLine = $currentTokenRealPositions[$lastToken];
-                    $numLines = $lastLine + 1 - $firstLine;
+                    $numLines     = $lastLine + 1 - $firstLine;
                     $realNumLines = $lastRealLine + 1 - $firstRealLine;
 
                     if ($numLines >= $this->config->minLines() &&
@@ -145,7 +144,7 @@ final class DefaultStrategy extends AbstractStrategy
                         );
                     }
 
-                    $found = false;
+                    $found     = false;
                     $firstLine = 0;
                 }
 
@@ -156,12 +155,12 @@ final class DefaultStrategy extends AbstractStrategy
         }
 
         if ($found) {
-            $fileA = $this->hashes[$firstHash][0];
-            $firstLineA = $this->hashes[$firstHash][1];
-            $lastToken = ($tokenNr - 1) + $this->config->minTokens() - 1;
-            $lastLine = $currentTokenPositions[$lastToken];
+            $fileA        = $this->hashes[$firstHash][0];
+            $firstLineA   = $this->hashes[$firstHash][1];
+            $lastToken    = ($tokenNr - 1) + $this->config->minTokens() - 1;
+            $lastLine     = $currentTokenPositions[$lastToken];
             $lastRealLine = $currentTokenRealPositions[$lastToken];
-            $numLines = $lastLine + 1 - $firstLine;
+            $numLines     = $lastLine + 1 - $firstLine;
             $realNumLines = $lastRealLine + 1 - $firstRealLine;
 
             if ($numLines >= $this->config->minLines() &&

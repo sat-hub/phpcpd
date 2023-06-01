@@ -16,6 +16,7 @@ final class ArgumentsBuilder
 {
     /**
      * @param list<string> $argv
+     *
      * @throws ArgumentsBuilderException
      */
     public function build(array $argv): Arguments
@@ -48,8 +49,8 @@ final class ArgumentsBuilder
         }
 
         /** @var list<string> $directories */
-        $directories      = $options[1];
-        $exclude          = [];
+        $directories = $options[1];
+        $exclude     = [];
         /** @var list<string> $suffixes */
         $suffixes         = ['.php'];
         $pmdCpdXmlLogfile = null;
@@ -65,7 +66,6 @@ final class ArgumentsBuilder
 
         /** @var array{0: string, 1: string} $option */
         foreach ($options[0] as $option) {
-
             switch ($option[0]) {
                 case '--suffix':
                     $suffixes[] = $option[1];
