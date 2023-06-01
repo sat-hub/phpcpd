@@ -11,6 +11,7 @@ namespace SebastianBergmann\PHPCPD\Detector;
 
 use SebastianBergmann\PHPCPD\CodeCloneMap;
 use SebastianBergmann\PHPCPD\Detector\Strategy\AbstractStrategy;
+use Symfony\Component\Finder\Finder;
 
 final class Detector
 {
@@ -21,18 +22,13 @@ final class Detector
         $this->strategy = $strategy;
     }
 
-    /** @param list<string> $files */
-    public function copyPasteDetection(iterable $files): CodeCloneMap
+    public function copyPasteDetection(Finder $files): CodeCloneMap
     {
         $result = new CodeCloneMap;
 
         foreach ($files as $file) {
-            if (empty($file)) {
-                continue;
-            }
-
             $this->strategy->processFile(
-                $file,
+                $file->getRealPath(),
                 $result
             );
         }

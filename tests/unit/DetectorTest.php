@@ -17,6 +17,7 @@ use SebastianBergmann\PHPCPD\ArgumentsBuilder;
 use SebastianBergmann\PHPCPD\Detector\Strategy\AbstractStrategy;
 use SebastianBergmann\PHPCPD\Detector\Strategy\DefaultStrategy;
 use SebastianBergmann\PHPCPD\Detector\Strategy\StrategyConfiguration;
+use Symfony\Component\Finder\Finder;
 
 /**
  * @covers \SebastianBergmann\PHPCPD\Arguments
@@ -40,19 +41,19 @@ final class DetectorTest extends TestCase
     public function testDetectingSimpleClonesWorks(AbstractStrategy $strategy): void
     {
         $clones = (new Detector($strategy))->copyPasteDetection(
-            [__DIR__ . '/../fixture/Math.php']
+            (new Finder())->in(__DIR__ . '/../fixture')->name('Math.php')
         );
 
         $clones = $clones->clones();
         $files  = $clones[0]->files();
         $file   = current($files);
 
-        $this->assertSame(__DIR__ . '/../fixture/Math.php', $file->name());
+        $this->assertSame(realpath(__DIR__ . '/../fixture/Math.php'), $file->name());
         $this->assertSame(75, $file->startLine());
 
         $file = next($files);
 
-        $this->assertSame(__DIR__ . '/../fixture/Math.php', $file->name());
+        $this->assertSame(realpath(__DIR__ . '/../fixture/Math.php'), $file->name());
         $this->assertSame(139, $file->startLine());
         $this->assertSame(59, $clones[0]->numberOfLines());
         $this->assertSame(136, $clones[0]->numberOfTokens());
@@ -133,23 +134,20 @@ final class DetectorTest extends TestCase
         $strategy->setConfig($config);
 
         $clones = (new Detector($strategy))->copyPasteDetection(
-            [
-                __DIR__ . '/../fixture/a.php',
-                __DIR__ . '/../fixture/b.php',
-            ]
+            (new Finder())->in(dirname(__DIR__) . '/fixture')->name('[a|b].php')
         );
 
         $clones = $clones->clones();
         $files  = $clones[0]->files();
-        $file   = current($files);
-
+        ksort($files);
+        $file = current($files);
         $this->assertCount(1, $clones);
-        $this->assertSame(__DIR__ . '/../fixture/a.php', $file->name());
+        $this->assertSame(dirname(__DIR__) . '/fixture/a.php', $file->name());
         $this->assertSame(4, $file->startLine());
 
         $file = next($files);
 
-        $this->assertSame(__DIR__ . '/../fixture/b.php', $file->name());
+        $this->assertSame(dirname(__DIR__) . '/fixture/b.php', $file->name());
         $this->assertSame(4, $file->startLine());
         $this->assertSame(20, $clones[0]->numberOfLines());
         $this->assertSame(60, $clones[0]->numberOfTokens());
@@ -166,11 +164,7 @@ final class DetectorTest extends TestCase
         $strategy->setConfig($config);
 
         $clones = (new Detector($strategy))->copyPasteDetection(
-            [
-                __DIR__ . '/../fixture/a.php',
-                __DIR__ . '/../fixture/b.php',
-                __DIR__ . '/../fixture/c.php',
-            ]
+            (new Finder())->in(dirname(__DIR__) . '/fixture')->name('[a|b|c].php')
         );
 
         $clones = $clones->clones();
@@ -181,17 +175,17 @@ final class DetectorTest extends TestCase
         $file = current($files);
 
         $this->assertCount(1, $clones);
-        $this->assertSame(__DIR__ . '/../fixture/a.php', $file->name());
+        $this->assertSame(dirname(__DIR__) . '/fixture/a.php', $file->name());
         $this->assertSame(4, $file->startLine());
 
         $file = next($files);
 
-        $this->assertSame(__DIR__ . '/../fixture/b.php', $file->name());
+        $this->assertSame(dirname(__DIR__) . '/fixture/b.php', $file->name());
         $this->assertSame(4, $file->startLine());
 
         $file = next($files);
 
-        $this->assertSame(__DIR__ . '/../fixture/c.php', $file->name());
+        $this->assertSame(dirname(__DIR__) . '/fixture/c.php', $file->name());
         $this->assertSame(4, $file->startLine());
     }
 
@@ -205,10 +199,7 @@ final class DetectorTest extends TestCase
         $config    = new StrategyConfiguration($arguments);
         $strategy->setConfig($config);
         $clones = (new Detector($strategy))->copyPasteDetection(
-            [
-                __DIR__ . '/../fixture/a.php',
-                __DIR__ . '/../fixture/b.php',
-            ]
+            (new Finder())->in(dirname(__DIR__) . '/fixture')->name('[a|b].php')
         );
 
         $this->assertCount(0, $clones->clones());
@@ -224,10 +215,7 @@ final class DetectorTest extends TestCase
         $config    = new StrategyConfiguration($arguments);
         $strategy->setConfig($config);
         $clones = (new Detector($strategy))->copyPasteDetection(
-            [
-                __DIR__ . '/../fixture/a.php',
-                __DIR__ . '/../fixture/b.php',
-            ]
+            (new Finder())->in(__DIR__ . '/../fixture')->name('[a|b].php')
         );
 
         $this->assertCount(0, $clones->clones());
@@ -243,10 +231,7 @@ final class DetectorTest extends TestCase
         $config    = new StrategyConfiguration($arguments);
         $strategy->setConfig($config);
         $clones = (new Detector($strategy))->copyPasteDetection(
-            [
-                __DIR__ . '/../fixture/a.php',
-                __DIR__ . '/../fixture/d.php',
-            ]
+            (new Finder())->in(__DIR__ . '/../fixture')->name('[a|b].php')
         );
 
         $this->assertCount(1, $clones->clones());
@@ -265,10 +250,7 @@ final class DetectorTest extends TestCase
         $detector = new Detector($strategy);
 
         $clones = $detector->copyPasteDetection(
-            [
-                __DIR__ . '/../fixture/e.php',
-                __DIR__ . '/../fixture/f.php',
-            ]
+            (new Finder())->in(__DIR__ . '/../fixture')->name('[e|f].php')
         );
 
         $this->assertCount(0, $clones->clones());
@@ -279,13 +261,7 @@ final class DetectorTest extends TestCase
         $strategy->setConfig($config);
 
         $clones = $detector->copyPasteDetection(
-            [
-                __DIR__ . '/../fixture/e.php',
-                __DIR__ . '/../fixture/f.php',
-            ],
-            7,
-            10,
-            true
+            (new Finder())->in(__DIR__ . '/../fixture')->name('[e|f].php')
         );
 
         $this->assertCount(1, $clones->clones());

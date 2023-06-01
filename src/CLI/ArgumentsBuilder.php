@@ -52,7 +52,7 @@ final class ArgumentsBuilder
         $directories = $options[1];
         $exclude     = [];
         /** @var list<string> $suffixes */
-        $suffixes         = ['.php'];
+        $suffixes         = ['*.php'];
         $pmdCpdXmlLogfile = null;
         $linesThreshold   = 5;
         $tokensThreshold  = 70;
