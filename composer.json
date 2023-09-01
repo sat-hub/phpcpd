@@ -1,7 +1,8 @@
 {
-    "name": "sebastian/phpcpd",
+    "name": "sat-hub/phpcpd",
     "description": "Copy/Paste Detector (CPD) for PHP code.",
-    "homepage": "https://github.com/sebastianbergmann/phpcpd",
+    "type": "library",
+    "keywords": ["analysis", "cpd", "detection", "php", "testing"],
     "license": "BSD-3-Clause",
     "authors": [
         {
@@ -10,27 +11,19 @@
             "role": "lead"
         }
     ],
-    "support": {
-        "issues": "https://github.com/sebastianbergmann/phpcpd/issues"
-    },
-    "config": {
-        "platform": {
-            "php": "8.1.0"
-        },
-        "optimize-autoloader": true,
-        "sort-packages": true
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "version": "7.0.0",
+    "time": "2023-09-01",
+
     "require": {
-        "php": ">=8.1",
+        "php": "~8.1",
         "ext-dom": "*",
         "ext-mbstring": "*",
-        "phpunit/php-timer": "^6.0",
-        "sebastian/cli-parser": "^2.0",
-        "sebastian/version": "^4.0",
-        "symfony/finder": "^6.3"
+        "phpunit/php-timer": "~6.0",
+        "sebastian/cli-parser": "~2.0",
+        "sebastian/version": "~4.0",
+        "symfony/finder": "~6.3"
     },
+
     "autoload": {
         "classmap": [
             "src/"
@@ -38,10 +31,5 @@
     },
     "bin": [
         "phpcpd"
-    ],
-    "extra": {
-        "branch-alias": {
-            "dev-main": "7.0-dev"
-        }
-    }
+    ]
 }
