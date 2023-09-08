@@ -26,13 +26,6 @@ use SebastianBergmann\PHPCPD\OutOfBoundsException;
 class PairList
 {
     /**
-     * Version used for serialization.
-     *
-     * @var int
-     */
-    private $serialVersionUID = 1;
-
-    /**
      * The current size.
      *
      * @var int

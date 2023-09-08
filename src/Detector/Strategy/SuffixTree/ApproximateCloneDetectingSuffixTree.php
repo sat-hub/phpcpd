@@ -32,7 +32,7 @@ class ApproximateCloneDetectingSuffixTree extends SuffixTree
      * The number of leaves reachable from the given node (1 for leaves).
      *
      * @var int[]
-     * */
+     */
     private $leafCount = [];
 
     /**
@@ -148,10 +148,10 @@ class ApproximateCloneDetectingSuffixTree extends SuffixTree
         $map = [];
 
         for ($index = 0; $index <= count($this->word); $index++) {
-            /** @var CloneInfo[] */
+            /** @var ?CloneInfo[] $existingClones */
             $existingClones = $this->cloneInfos[$index] ?? null;
 
-            if (!empty($existingClones)) {
+            if (null !== $existingClones) {
                 foreach ($existingClones as $ci) {
                     // length = number of tokens
                     // TODO: min token length
@@ -168,7 +168,7 @@ class ApproximateCloneDetectingSuffixTree extends SuffixTree
             }
         }
 
-        /** @var CloneInfo[] */
+        /** @var CloneInfo[] $values */
         $values = array_values($map);
         usort($values, static function (CloneInfo $a, CloneInfo $b): int {
             return $b->length - $a->length;
@@ -376,7 +376,7 @@ class ApproximateCloneDetectingSuffixTree extends SuffixTree
         $currentLength        = 1;
 
         for (; $currentLength <= $currentNodeWordLength; $currentLength++) {
-            /** @var int */
+            /** @var int $best */
             $best                              = $currentLength;
             $this->edBuffer[0][$currentLength] = $currentLength;
             $this->edBuffer[$currentLength][0] = $currentLength;

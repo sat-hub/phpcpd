@@ -91,7 +91,7 @@ final class DefaultStrategy extends AbstractStrategy
         $tokenNr       = 0;
         $firstHash     = '';
         $firstToken    = 0;
-        /** @var int<0, max> */
+        /** @var int<0, max> $lastToken */
         $lastToken = 0;
 
         while ($tokenNr <= $count - $this->config->minTokens()) {

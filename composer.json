@@ -43,5 +43,8 @@
         "branch-alias": {
             "dev-main": "7.0-dev"
         }
+    },
+    "require-dev": {
+        "rector/rector": "^0.18.2"
     }
 }

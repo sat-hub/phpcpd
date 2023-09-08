@@ -83,3 +83,70 @@ jobs:
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
+
+  rector-php-cs-fixer-pr:
+    name: PHP-CS-Fixer / Rector
+    runs-on: "ubuntu-latest"
+    if: github.actor != 'dependabot[bot]'
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+        with:
+          fetch-depth: 0
+      - name: "Install PHP with extensions"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          coverage: "pcov"
+          tools: composer, phpunit:9.5
+      - name: Get PR Data
+        id: pr
+        run: |
+          cat "$GITHUB_EVENT_PATH" | jq .
+          export NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+          echo "::set-output name=number::$NUMBER"
+          
+          export BRANCH=$(jq --raw-output .pull_request.head.ref "$GITHUB_EVENT_PATH")
+          echo "::set-output name=branch::$BRANCH"
+          
+          export TITLE=$(jq --raw-output .pull_request.title "$GITHUB_EVENT_PATH")
+          echo "::set-output name=title::$TITLE"
+      - name: Checkout PR
+        run: |
+          git checkout ${{ steps.pr.outputs.branch }}
+      # —— Composer 🧙‍️ —————————————————————————————————————————————————————————
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+      - name: Install Composer dependencies
+        run: composer install
+      # —— Run php-cs-fixer and rector 🧙‍️———————————————————————————————————————
+      - name: php-cs-fixer
+        run: |
+          wget https://cs.symfony.com/download/php-cs-fixer-v3.phar -O php-cs-fixer
+          php php-cs-fixer fix
+      - name: commit php-cs-fixer changes
+        run: |
+          git diff --quiet && git diff --staged --quiet || git -c user.name='php-cs-fixer' -c user.email='php-cs-fixer@neubaukompass.de' commit -a -m "Changes by php-cs-fixer"
+      - name: rector
+        run: |
+          ./vendor/bin/rector process
+          git add -u
+      - name: commit rector changes
+        run: |
+          git diff --quiet && git diff --staged --quiet || git -c user.name='rector' -c user.email='rector@neubaukompass.de' commit -a -m "Ruling the world via Rector!"
+      # —— Create PR if there are change 🧙‍️—————————————————————————————————————
+      - name: Create PR for CS fixups
+        uses: peter-evans/create-pull-request@v4 # renovate: tag=v4.0.2
+        id: create-pull-request
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "[rector] ${{ steps.pr.outputs.title }}"
+          base: ${{ steps.pr.outputs.branch }}
+          branch: rectified/${{ steps.pr.outputs.branch }}
+          assignees: ${{ github.actor }}
+          labels: php-cs-fixer, rector
+          body: Please merge these changes into the ${{ steps.pr.outputs.branch }} branch to fix coding standard violations.
+          commit-message: Changed by rector in ${{ steps.pr.outputs.branch }}
+      - name: Fail the workflow when necessary CS fixes were detected
+        run: echo "Failing workflow run because CS violations were detected." && exit 1
+        if: steps.create-pull-request.outputs.pr_number
