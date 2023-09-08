@@ -74,11 +74,7 @@ final class CodeCloneMap implements Countable, IteratorAggregate
 
     public function percentage(): string
     {
-        if ($this->numberOfLines > 0) {
-            $percent = ($this->numberOfDuplicatedLines / $this->numberOfLines) * 100;
-        } else {
-            $percent = 100;
-        }
+        $percent = $this->numberOfLines > 0 ? ($this->numberOfDuplicatedLines / $this->numberOfLines) * 100 : 100;
 
         return sprintf('%01.2F%%', $percent);
     }
@@ -115,7 +111,7 @@ final class CodeCloneMap implements Countable, IteratorAggregate
 
     public function isEmpty(): bool
     {
-        return empty($this->clones);
+        return $this->clones === [];
     }
 
     public function averageSize(): float

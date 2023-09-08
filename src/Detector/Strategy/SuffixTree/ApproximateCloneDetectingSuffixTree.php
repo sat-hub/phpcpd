@@ -114,8 +114,9 @@ class ApproximateCloneDetectingSuffixTree extends SuffixTree
         $this->minLength    = $minLength;
         $this->headEquality = $headEquality;
         $this->cloneInfos   = [];
+        $counter            = count($this->word);
 
-        for ($i = 0; $i < count($this->word); $i++) {
+        for ($i = 0; $i < $counter; $i++) {
             // Do quick start, as first character has to match anyway.
             $node = $this->nextNode->get(0, $this->word[$i]);
 
@@ -145,9 +146,10 @@ class ApproximateCloneDetectingSuffixTree extends SuffixTree
             }
         }
 
-        $map = [];
+        $map     = [];
+        $counter = count($this->word);
 
-        for ($index = 0; $index <= count($this->word); $index++) {
+        for ($index = 0; $index <= $counter; $index++) {
             /** @var ?CloneInfo[] $existingClones */
             $existingClones = $this->cloneInfos[$index] ?? null;
 
@@ -158,7 +160,7 @@ class ApproximateCloneDetectingSuffixTree extends SuffixTree
                     if ($ci->length > $minLength) {
                         $previousCi = $map[$ci->token->line] ?? null;
 
-                        if ($previousCi === null) {
+                        if (!$previousCi instanceof CloneInfo) {
                             $map[$ci->token->line] = $ci;
                         } elseif ($ci->length > $previousCi->length) {
                             $map[$ci->token->line] = $ci;
@@ -237,7 +239,7 @@ class ApproximateCloneDetectingSuffixTree extends SuffixTree
         // sensible cost-benefit ratio. Suggestions are welcome!
 
         // self match?
-        if ($this->leafCount[$node] == 1 && $this->nodeWordBegin[$node] == $wordPosition) {
+        if ($this->leafCount[$node] == 1 && $this->nodeWordBegin[$node] === $wordPosition) {
             return false;
         }
 
@@ -545,7 +547,7 @@ class ApproximateCloneDetectingSuffixTree extends SuffixTree
         if ($this->nodeChildFirst[$currentNode] < 0) {
             $start = count($this->word) - $distance - $nodeWordLength;
 
-            if ($start != $wordStart) {
+            if ($start !== $wordStart) {
                 $clonePositions->add($start, $nodeWordLength);
             }
         }

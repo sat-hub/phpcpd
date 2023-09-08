@@ -60,7 +60,7 @@ final class CodeClone
 
     public function lines(string $indent = ''): string
     {
-        if (empty($this->lines)) {
+        if ($this->lines === '') {
             $file = current($this->files);
 
             $this->lines = implode(

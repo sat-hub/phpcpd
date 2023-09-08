@@ -69,7 +69,7 @@ final class SuffixTreeStrategy extends AbstractStrategy
      */
     public function postProcess(): void
     {
-        if (empty($this->result)) {
+        if (!$this->result instanceof CodeCloneMap) {
             throw new MissingResultException('Missing result');
         }
 
@@ -84,9 +84,10 @@ final class SuffixTreeStrategy extends AbstractStrategy
 
         foreach ($cloneInfos as $cloneInfo) {
             /** @var int[] $others */
-            $others = $cloneInfo->otherClones->extractFirstList();
+            $others  = $cloneInfo->otherClones->extractFirstList();
+            $counter = count($others);
 
-            for ($j = 0; $j < count($others); $j++) {
+            for ($j = 0; $j < $counter; $j++) {
                 $otherStart = $others[$j];
                 $t          = $this->word[$otherStart];
                 $lastToken  = $this->word[$cloneInfo->position + $cloneInfo->length];

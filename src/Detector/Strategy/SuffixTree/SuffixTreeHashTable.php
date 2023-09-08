@@ -115,7 +115,7 @@ class SuffixTreeHashTable
     {
         $pos = $this->hashFind($keyNode, $keyChar);
 
-        if ($this->keyChars[$pos] === null) {
+        if (!$this->keyChars[$pos] instanceof AbstractToken) {
             return -1;
         }
 
@@ -163,7 +163,7 @@ class SuffixTreeHashTable
         $free = 0;
 
         for ($i = 0; $i < $this->tableSize; $i++) {
-            if ($this->keyChars[$i] !== null) {
+            if ($this->keyChars[$i] instanceof AbstractToken) {
                 // insert $this->keyNodes[$i] -> $this->resultNodes[$i]
                 $nodeChild[$free]                    = $this->resultNodes[$i];
                 $nodeNextIndex[$free]                = $nodeFirstIndex[$this->keyNodes[$i]];
@@ -183,7 +183,7 @@ class SuffixTreeHashTable
         $pos       = $this->posMod($this->primaryHash($keyNode, $hash));
         $secondary = $this->secondaryHash($keyNode, $hash);
 
-        while ($this->keyChars[$pos] !== null) {
+        while ($this->keyChars[$pos] instanceof AbstractToken) {
             if ($this->keyNodes[$pos] === $keyNode && $keyChar->equals($this->keyChars[$pos])) {
                 break;
             }
