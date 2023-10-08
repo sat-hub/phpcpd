@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,12 +10,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\PHPCPD\Detector\Strategy;
 
-use function array_keys;
-use function file_get_contents;
-use function is_array;
-use function token_get_all;
 use SebastianBergmann\PHPCPD\CodeClone;
 use SebastianBergmann\PHPCPD\CodeCloneFile;
 use SebastianBergmann\PHPCPD\CodeCloneMap;
@@ -45,12 +45,12 @@ final class SuffixTreeStrategy extends AbstractStrategy
     public function processFile(string $file, CodeCloneMap $result): void
     {
         $content = file_get_contents($file);
-        $tokens  = token_get_all($content);
+        $tokens = token_get_all($content);
 
         foreach (array_keys($tokens) as $key) {
             $token = $tokens[$key];
 
-            if (is_array($token) && !isset($this->tokensIgnoreList[$token[0]])) {
+            if (\is_array($token) && !isset($this->tokensIgnoreList[$token[0]])) {
                 $this->word[] = new Token(
                     $token[0],
                     token_name($token[0]),
@@ -74,7 +74,7 @@ final class SuffixTreeStrategy extends AbstractStrategy
         }
 
         // Sentinel = End of word
-        $this->word[] = new Sentinel;
+        $this->word[] = new Sentinel();
 
         $cloneInfos = (new ApproximateCloneDetectingSuffixTree($this->word))->findClones(
             $this->config->minTokens(),
@@ -84,14 +84,13 @@ final class SuffixTreeStrategy extends AbstractStrategy
 
         foreach ($cloneInfos as $cloneInfo) {
             /** @var int[] $others */
-            $others  = $cloneInfo->otherClones->extractFirstList();
-            $counter = count($others);
+            $others = $cloneInfo->otherClones->extractFirstList();
+            $counter = \count($others);
 
-            for ($j = 0; $j < $counter; $j++) {
+            for ($j = 0; $j < $counter; ++$j) {
                 $otherStart = $others[$j];
-                $t          = $this->word[$otherStart];
-                $lastToken  = $this->word[$cloneInfo->position + $cloneInfo->length];
-
+                $t = $this->word[$otherStart];
+                $lastToken = $this->word[$cloneInfo->position + $cloneInfo->length];
                 // If we stumbled upon the Sentinel, rewind one step.
                 if ($lastToken instanceof Sentinel) {
                     $lastToken = $this->word[$cloneInfo->position + $cloneInfo->length - 2];

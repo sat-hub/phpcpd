@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,11 +10,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\PHPCPD;
 
-use const PHP_EOL;
-use function count;
-use function printf;
 use SebastianBergmann\PHPCPD\Detector\Detector;
 use SebastianBergmann\PHPCPD\Detector\Strategy\AbstractStrategy;
 use SebastianBergmann\PHPCPD\Detector\Strategy\DefaultStrategy;
@@ -36,9 +37,9 @@ final class Application
         $this->printVersion();
 
         try {
-            $arguments = (new ArgumentsBuilder)->build($argv);
+            $arguments = (new ArgumentsBuilder())->build($argv);
         } catch (Exception $e) {
-            print PHP_EOL . $e->getMessage() . PHP_EOL;
+            echo \PHP_EOL.$e->getMessage().\PHP_EOL;
 
             return 1;
         }
@@ -47,7 +48,7 @@ final class Application
             return 0;
         }
 
-        print PHP_EOL;
+        echo \PHP_EOL;
 
         if ($arguments->help()) {
             $this->help();
@@ -60,8 +61,8 @@ final class Application
             ->files()
             ->name($arguments->suffixes());
 
-        if (iterator_count($files) == 0) {
-            print 'No files found to scan' . PHP_EOL;
+        if (0 == iterator_count($files)) {
+            echo 'No files found to scan'.\PHP_EOL;
 
             return 1;
         }
@@ -71,32 +72,32 @@ final class Application
         try {
             $strategy = $this->pickStrategy($arguments->algorithm(), $config);
         } catch (InvalidStrategyException $e) {
-            print $e->getMessage() . PHP_EOL;
+            echo $e->getMessage().\PHP_EOL;
 
             return 1;
         }
 
-        $timer = new Timer;
+        $timer = new Timer();
         $timer->start();
 
         $clones = (new Detector($strategy))->copyPasteDetection($files);
 
-        (new Text)->printResult($clones, $arguments->verbose());
+        (new Text())->printResult($clones, $arguments->verbose());
 
         if ($arguments->pmdCpdXmlLogfile()) {
             (new PMD($arguments->pmdCpdXmlLogfile()))->processClones($clones);
         }
 
-        print (new ResourceUsageFormatter)->resourceUsage($timer->stop()) . PHP_EOL;
+        echo (new ResourceUsageFormatter())->resourceUsage($timer->stop()).\PHP_EOL;
 
-        return count($clones) > 0 ? 1 : 0;
+        return \count($clones) > 0 ? 1 : 0;
     }
 
     private function printVersion(): void
     {
         printf(
-            'phpcpd %s by Sebastian Bergmann.' . PHP_EOL,
-            (new Version(self::VERSION, dirname(__DIR__)))->asString()
+            'phpcpd %s by Sebastian Bergmann.'.\PHP_EOL,
+            (new Version(self::VERSION, \dirname(__DIR__)))->asString()
         );
     }
 
@@ -108,13 +109,13 @@ final class Application
         return match ($algorithm) {
             null, 'rabin-karp' => new DefaultStrategy($config),
             'suffixtree' => new SuffixTreeStrategy($config),
-            default      => throw new InvalidStrategyException('Unsupported algorithm: ' . $algorithm),
+            default => throw new InvalidStrategyException('Unsupported algorithm: '.$algorithm),
         };
     }
 
     private function help(): void
     {
-        print <<<'EOT'
+        echo <<<'EOT'
 Usage:
   phpcpd [options] <directories>
 

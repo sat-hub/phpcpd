@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,6 +10,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\PHPCPD;
 
 use SebastianBergmann\CliParser\Exception as CliParserException;
@@ -22,7 +26,7 @@ final class ArgumentsBuilder
     public function build(array $argv): Arguments
     {
         try {
-            $options = (new CliParser)->parse(
+            $options = (new CliParser())->parse(
                 $argv,
                 'hv',
                 [
@@ -41,28 +45,24 @@ final class ArgumentsBuilder
                 ]
             );
         } catch (CliParserException $e) {
-            throw new ArgumentsBuilderException(
-                $e->getMessage(),
-                $e->getCode(),
-                $e
-            );
+            throw new ArgumentsBuilderException($e->getMessage(), $e->getCode(), $e);
         }
 
         /** @var list<string> $directories */
         $directories = $options[1];
-        $exclude     = [];
+        $exclude = [];
         /** @var list<string> $suffixes */
-        $suffixes         = ['*.php'];
+        $suffixes = ['*.php'];
         $pmdCpdXmlLogfile = null;
-        $linesThreshold   = 5;
-        $tokensThreshold  = 70;
-        $editDistance     = 5;
-        $headEquality     = 10;
-        $fuzzy            = false;
-        $verbose          = false;
-        $help             = false;
-        $version          = false;
-        $algorithm        = 'rabin-karp';
+        $linesThreshold = 5;
+        $tokensThreshold = 70;
+        $editDistance = 5;
+        $headEquality = 10;
+        $fuzzy = false;
+        $verbose = false;
+        $help = false;
+        $version = false;
+        $algorithm = 'rabin-karp';
 
         /** @var array{0: string, 1: string} $option */
         foreach ($options[0] as $option) {
@@ -131,9 +131,7 @@ final class ArgumentsBuilder
         }
 
         if (empty($options[1]) && !$help && !$version) {
-            throw new ArgumentsBuilderException(
-                'No directory specified'
-            );
+            throw new ArgumentsBuilderException('No directory specified');
         }
 
         return new Arguments(

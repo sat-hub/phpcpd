@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,6 +10,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\PHPCPD;
 
 final class CodeCloneFile
@@ -19,9 +23,9 @@ final class CodeCloneFile
 
     public function __construct(string $name, int $startLine)
     {
-        $this->name      = $name;
+        $this->name = $name;
         $this->startLine = $startLine;
-        $this->id        = $this->name . ':' . $this->startLine;
+        $this->id = $this->name.':'.$this->startLine;
     }
 
     public function id(): string

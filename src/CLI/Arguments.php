@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,6 +10,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\PHPCPD;
 
 final class Arguments
@@ -53,19 +57,19 @@ final class Arguments
      */
     public function __construct(array $directories, array $suffixes, array $exclude, ?string $pmdCpdXmlLogfile, int $linesThreshold, int $tokensThreshold, bool $fuzzy, bool $verbose, bool $help, bool $version, ?string $algorithm, int $editDistance, int $headEquality)
     {
-        $this->directories      = $directories;
-        $this->suffixes         = $suffixes;
-        $this->exclude          = $exclude;
+        $this->directories = $directories;
+        $this->suffixes = $suffixes;
+        $this->exclude = $exclude;
         $this->pmdCpdXmlLogfile = $pmdCpdXmlLogfile;
-        $this->linesThreshold   = $linesThreshold;
-        $this->tokensThreshold  = $tokensThreshold;
-        $this->fuzzy            = $fuzzy;
-        $this->verbose          = $verbose;
-        $this->help             = $help;
-        $this->version          = $version;
-        $this->algorithm        = $algorithm;
-        $this->editDistance     = $editDistance;
-        $this->headEquality     = $headEquality;
+        $this->linesThreshold = $linesThreshold;
+        $this->tokensThreshold = $tokensThreshold;
+        $this->fuzzy = $fuzzy;
+        $this->verbose = $verbose;
+        $this->help = $help;
+        $this->version = $version;
+        $this->algorithm = $algorithm;
+        $this->editDistance = $editDistance;
+        $this->headEquality = $headEquality;
     }
 
     /**

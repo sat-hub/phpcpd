@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,11 +10,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\PHPCPD\Detector;
 
-use function current;
-use function next;
-use function sort;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\PHPCPD\ArgumentsBuilder;
 use SebastianBergmann\PHPCPD\Detector\Strategy\AbstractStrategy;
@@ -41,19 +42,19 @@ final class DetectorTest extends TestCase
     public function testDetectingSimpleClonesWorks(AbstractStrategy $strategy): void
     {
         $clones = (new Detector($strategy))->copyPasteDetection(
-            (new Finder())->in(__DIR__ . '/../fixture')->name('Math.php')
+            (new Finder())->in(__DIR__.'/../fixture')->name('Math.php')
         );
 
         $clones = $clones->clones();
-        $files  = $clones[0]->files();
-        $file   = current($files);
+        $files = $clones[0]->files();
+        $file = current($files);
 
-        $this->assertSame(realpath(__DIR__ . '/../fixture/Math.php'), $file->name());
+        $this->assertSame(realpath(__DIR__.'/../fixture/Math.php'), $file->name());
         $this->assertSame(75, $file->startLine());
 
         $file = next($files);
 
-        $this->assertSame(realpath(__DIR__ . '/../fixture/Math.php'), $file->name());
+        $this->assertSame(realpath(__DIR__.'/../fixture/Math.php'), $file->name());
         $this->assertSame(139, $file->startLine());
         $this->assertSame(59, $clones[0]->numberOfLines());
         $this->assertSame(136, $clones[0]->numberOfTokens());
@@ -128,26 +129,26 @@ final class DetectorTest extends TestCase
      */
     public function testDetectingExactDuplicateFilesWorks(AbstractStrategy $strategy): void
     {
-        $argv      = [1 => '.', '--min-lines', '20', '--min-tokens', '50'];
-        $arguments = (new ArgumentsBuilder)->build($argv);
-        $config    = new StrategyConfiguration($arguments);
+        $argv = [1 => '.', '--min-lines', '20', '--min-tokens', '50'];
+        $arguments = (new ArgumentsBuilder())->build($argv);
+        $config = new StrategyConfiguration($arguments);
         $strategy->setConfig($config);
 
         $clones = (new Detector($strategy))->copyPasteDetection(
-            (new Finder())->in(dirname(__DIR__) . '/fixture')->name('[a|b].php')
+            (new Finder())->in(\dirname(__DIR__).'/fixture')->name('[a|b].php')
         );
 
         $clones = $clones->clones();
-        $files  = $clones[0]->files();
+        $files = $clones[0]->files();
         ksort($files);
         $file = current($files);
         $this->assertCount(1, $clones);
-        $this->assertSame(dirname(__DIR__) . '/fixture/a.php', $file->name());
+        $this->assertSame(\dirname(__DIR__).'/fixture/a.php', $file->name());
         $this->assertSame(4, $file->startLine());
 
         $file = next($files);
 
-        $this->assertSame(dirname(__DIR__) . '/fixture/b.php', $file->name());
+        $this->assertSame(\dirname(__DIR__).'/fixture/b.php', $file->name());
         $this->assertSame(4, $file->startLine());
         $this->assertSame(20, $clones[0]->numberOfLines());
         $this->assertSame(60, $clones[0]->numberOfTokens());
@@ -158,34 +159,34 @@ final class DetectorTest extends TestCase
      */
     public function testDetectingClonesInMoreThanTwoFiles(AbstractStrategy $strategy): void
     {
-        $argv      = [1 => '.', '--min-lines', '20', '--min-tokens', '60'];
-        $arguments = (new ArgumentsBuilder)->build($argv);
-        $config    = new StrategyConfiguration($arguments);
+        $argv = [1 => '.', '--min-lines', '20', '--min-tokens', '60'];
+        $arguments = (new ArgumentsBuilder())->build($argv);
+        $config = new StrategyConfiguration($arguments);
         $strategy->setConfig($config);
 
         $clones = (new Detector($strategy))->copyPasteDetection(
-            (new Finder())->in(dirname(__DIR__) . '/fixture')->name('[a|b|c].php')
+            (new Finder())->in(\dirname(__DIR__).'/fixture')->name('[a|b|c].php')
         );
 
         $clones = $clones->clones();
-        //var_dump($clones);
+        // var_dump($clones);
         $files = $clones[0]->files();
         sort($files);
 
         $file = current($files);
 
         $this->assertCount(1, $clones);
-        $this->assertSame(dirname(__DIR__) . '/fixture/a.php', $file->name());
+        $this->assertSame(\dirname(__DIR__).'/fixture/a.php', $file->name());
         $this->assertSame(4, $file->startLine());
 
         $file = next($files);
 
-        $this->assertSame(dirname(__DIR__) . '/fixture/b.php', $file->name());
+        $this->assertSame(\dirname(__DIR__).'/fixture/b.php', $file->name());
         $this->assertSame(4, $file->startLine());
 
         $file = next($files);
 
-        $this->assertSame(dirname(__DIR__) . '/fixture/c.php', $file->name());
+        $this->assertSame(\dirname(__DIR__).'/fixture/c.php', $file->name());
         $this->assertSame(4, $file->startLine());
     }
 
@@ -194,12 +195,12 @@ final class DetectorTest extends TestCase
      */
     public function testClonesAreIgnoredIfTheySpanLessTokensThanMinTokens(AbstractStrategy $strategy): void
     {
-        $argv      = [1 => '.', '--min-lines', '20', '--min-tokens', '61'];
-        $arguments = (new ArgumentsBuilder)->build($argv);
-        $config    = new StrategyConfiguration($arguments);
+        $argv = [1 => '.', '--min-lines', '20', '--min-tokens', '61'];
+        $arguments = (new ArgumentsBuilder())->build($argv);
+        $config = new StrategyConfiguration($arguments);
         $strategy->setConfig($config);
         $clones = (new Detector($strategy))->copyPasteDetection(
-            (new Finder())->in(dirname(__DIR__) . '/fixture')->name('[a|b].php')
+            (new Finder())->in(\dirname(__DIR__).'/fixture')->name('[a|b].php')
         );
 
         $this->assertCount(0, $clones->clones());
@@ -210,12 +211,12 @@ final class DetectorTest extends TestCase
      */
     public function testClonesAreIgnoredIfTheySpanLessLinesThanMinLines(AbstractStrategy $strategy): void
     {
-        $argv      = [1 => '.', '--min-lines', '21', '--min-tokens', '60'];
-        $arguments = (new ArgumentsBuilder)->build($argv);
-        $config    = new StrategyConfiguration($arguments);
+        $argv = [1 => '.', '--min-lines', '21', '--min-tokens', '60'];
+        $arguments = (new ArgumentsBuilder())->build($argv);
+        $config = new StrategyConfiguration($arguments);
         $strategy->setConfig($config);
         $clones = (new Detector($strategy))->copyPasteDetection(
-            (new Finder())->in(__DIR__ . '/../fixture')->name('[a|b].php')
+            (new Finder())->in(__DIR__.'/../fixture')->name('[a|b].php')
         );
 
         $this->assertCount(0, $clones->clones());
@@ -226,12 +227,12 @@ final class DetectorTest extends TestCase
      */
     public function testFuzzyClonesAreFound(AbstractStrategy $strategy): void
     {
-        $argv      = [1 => '.', '--min-lines', '5', '--min-tokens', '20', '--fuzzy', 'true'];
-        $arguments = (new ArgumentsBuilder)->build($argv);
-        $config    = new StrategyConfiguration($arguments);
+        $argv = [1 => '.', '--min-lines', '5', '--min-tokens', '20', '--fuzzy', 'true'];
+        $arguments = (new ArgumentsBuilder())->build($argv);
+        $config = new StrategyConfiguration($arguments);
         $strategy->setConfig($config);
         $clones = (new Detector($strategy))->copyPasteDetection(
-            (new Finder())->in(__DIR__ . '/../fixture')->name('[a|b].php')
+            (new Finder())->in(__DIR__.'/../fixture')->name('[a|b].php')
         );
 
         $this->assertCount(1, $clones->clones());
@@ -242,26 +243,26 @@ final class DetectorTest extends TestCase
      */
     public function testStripComments(AbstractStrategy $strategy): void
     {
-        $argv      = [1 => '.', '--min-lines', '8', '--min-tokens', '10', '--fuzzy', 'true'];
-        $arguments = (new ArgumentsBuilder)->build($argv);
-        $config    = new StrategyConfiguration($arguments);
+        $argv = [1 => '.', '--min-lines', '8', '--min-tokens', '10', '--fuzzy', 'true'];
+        $arguments = (new ArgumentsBuilder())->build($argv);
+        $config = new StrategyConfiguration($arguments);
         $strategy->setConfig($config);
 
         $detector = new Detector($strategy);
 
         $clones = $detector->copyPasteDetection(
-            (new Finder())->in(__DIR__ . '/../fixture')->name('[e|f].php')
+            (new Finder())->in(__DIR__.'/../fixture')->name('[e|f].php')
         );
 
         $this->assertCount(0, $clones->clones());
 
-        $argv      = [1 => '.', '--min-lines', '7', '--min-tokens', '10', '--fuzzy', 'true'];
-        $arguments = (new ArgumentsBuilder)->build($argv);
-        $config    = new StrategyConfiguration($arguments);
+        $argv = [1 => '.', '--min-lines', '7', '--min-tokens', '10', '--fuzzy', 'true'];
+        $arguments = (new ArgumentsBuilder())->build($argv);
+        $config = new StrategyConfiguration($arguments);
         $strategy->setConfig($config);
 
         $clones = $detector->copyPasteDetection(
-            (new Finder())->in(__DIR__ . '/../fixture')->name('[e|f].php')
+            (new Finder())->in(__DIR__.'/../fixture')->name('[e|f].php')
         );
 
         $this->assertCount(1, $clones->clones());
@@ -273,9 +274,9 @@ final class DetectorTest extends TestCase
     public function strategyProvider(): array
     {
         // Build default config.
-        $argv      = [1 => '.'];
-        $arguments = (new ArgumentsBuilder)->build($argv);
-        $config    = new StrategyConfiguration($arguments);
+        $argv = [1 => '.'];
+        $arguments = (new ArgumentsBuilder())->build($argv);
+        $config = new StrategyConfiguration($arguments);
 
         return [
             [new DefaultStrategy($config)],

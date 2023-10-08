@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,6 +10,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\PHPCPD\Detector;
 
 use SebastianBergmann\PHPCPD\CodeCloneMap;
@@ -24,7 +28,7 @@ final class Detector
 
     public function copyPasteDetection(Finder $files): CodeCloneMap
     {
-        $result = new CodeCloneMap;
+        $result = new CodeCloneMap();
 
         foreach ($files as $file) {
             $this->strategy->processFile(

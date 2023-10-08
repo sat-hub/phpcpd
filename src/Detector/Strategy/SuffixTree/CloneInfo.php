@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,6 +10,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree;
 
 /** Stores information on a clone. */
@@ -48,10 +52,10 @@ class CloneInfo
     /** Constructor. */
     public function __construct(int $length, int $position, int $occurrences, AbstractToken $token, PairList $otherClones)
     {
-        $this->length      = $length;
-        $this->position    = $position;
+        $this->length = $length;
+        $this->position = $position;
         $this->occurrences = $occurrences;
-        $this->token       = $token;
+        $this->token = $token;
         $this->otherClones = $otherClones;
     }
 

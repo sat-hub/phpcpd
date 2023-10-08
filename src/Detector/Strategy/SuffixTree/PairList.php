@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,6 +10,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree;
 
 use SebastianBergmann\PHPCPD\OutOfBoundsException;
@@ -51,14 +55,14 @@ class PairList
         if ($initialCapacity < 1) {
             $initialCapacity = 1;
         }
-        $this->firstElements  = array_fill(0, $initialCapacity, null);
+        $this->firstElements = array_fill(0, $initialCapacity, null);
         $this->secondElements = array_fill(0, $initialCapacity, null);
     }
 
     /** Returns whether the list is empty. */
     public function isEmpty(): bool
     {
-        return $this->size == 0;
+        return 0 == $this->size;
     }
 
     /** Returns the size of the list. */
@@ -75,9 +79,9 @@ class PairList
      */
     public function add($first, $second): void
     {
-        $this->firstElements[$this->size]  = $first;
+        $this->firstElements[$this->size] = $first;
         $this->secondElements[$this->size] = $second;
-        $this->size++;
+        ++$this->size;
     }
 
     /** Adds all pairs from another list. */
@@ -87,10 +91,10 @@ class PairList
         // other == this
         $otherSize = $other->size;
 
-        for ($i = 0; $i < $otherSize; $i++) {
-            $this->firstElements[$this->size]  = $other->firstElements[$i];
+        for ($i = 0; $i < $otherSize; ++$i) {
+            $this->firstElements[$this->size] = $other->firstElements[$i];
             $this->secondElements[$this->size] = $other->secondElements[$i];
-            $this->size++;
+            ++$this->size;
         }
     }
 
@@ -149,7 +153,7 @@ class PairList
     {
         $result = [];
 
-        for ($i = 0; $i < $this->size; $i++) {
+        for ($i = 0; $i < $this->size; ++$i) {
             $result[] = $this->firstElements[$i];
         }
 
@@ -165,7 +169,7 @@ class PairList
     {
         $result = [];
 
-        for ($i = 0; $i < $this->size; $i++) {
+        for ($i = 0; $i < $this->size; ++$i) {
             $result[] = $this->secondElements[$i];
         }
 
@@ -192,14 +196,14 @@ class PairList
     /** Removes the last element of the list. */
     public function removeLast(): void
     {
-        $this->size--;
+        --$this->size;
     }
 
     public function hashCode(): int
     {
         $prime = 31;
-        $hash  = $this->size;
-        $hash  = $prime * $hash + crc32(serialize($this->firstElements));
+        $hash = $this->size;
+        $hash = $prime * $hash + crc32(serialize($this->firstElements));
 
         return $prime * $hash + crc32(serialize($this->secondElements));
     }
@@ -211,7 +215,7 @@ class PairList
     private function checkWithinBounds(int $i): void
     {
         if ($i < 0 || $i >= $this->size) {
-            throw new OutOfBoundsException('Out of bounds: ' . $i);
+            throw new OutOfBoundsException('Out of bounds: '.$i);
         }
     }
 }
