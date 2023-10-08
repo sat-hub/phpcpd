@@ -104,6 +104,7 @@ class SuffixTreeHashTable
         while ($this->allowedSizes[$sizeIndex] < $minSize) {
             ++$sizeIndex;
         }
+
         $this->tableSize = $this->allowedSizes[$sizeIndex];
 
         $this->keyNodes = array_fill(0, $this->tableSize, 0);
@@ -138,6 +139,7 @@ class SuffixTreeHashTable
             $this->keyChars[$pos] = $keyChar;
             $this->keyNodes[$pos] = $keyNode;
         }
+
         $this->resultNodes[$pos] = $resultNode;
     }
 
@@ -164,6 +166,7 @@ class SuffixTreeHashTable
         foreach (array_keys($nodeFirstIndex) as $k) {
             $nodeFirstIndex[$k] = -1;
         }
+
         $free = 0;
 
         for ($i = 0; $i < $this->tableSize; ++$i) {
@@ -191,6 +194,7 @@ class SuffixTreeHashTable
             if ($this->keyNodes[$pos] === $keyNode && $keyChar->equals($this->keyChars[$pos])) {
                 break;
             }
+
             ++$this->_numColl;
             $pos = ($pos + $secondary) % $this->tableSize;
         }

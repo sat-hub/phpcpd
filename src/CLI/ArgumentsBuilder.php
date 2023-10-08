@@ -44,8 +44,8 @@ final class ArgumentsBuilder
                     'algorithm=',
                 ]
             );
-        } catch (CliParserException $e) {
-            throw new ArgumentsBuilderException($e->getMessage(), $e->getCode(), $e);
+        } catch (CliParserException $cliParserException) {
+            throw new ArgumentsBuilderException($cliParserException->getMessage(), $cliParserException->getCode(), $cliParserException);
         }
 
         /** @var list<string> $directories */

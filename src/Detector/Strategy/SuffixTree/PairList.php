@@ -55,6 +55,7 @@ class PairList
         if ($initialCapacity < 1) {
             $initialCapacity = 1;
         }
+
         $this->firstElements = array_fill(0, $initialCapacity, null);
         $this->secondElements = array_fill(0, $initialCapacity, null);
     }

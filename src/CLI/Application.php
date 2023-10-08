@@ -38,8 +38,8 @@ final class Application
 
         try {
             $arguments = (new ArgumentsBuilder())->build($argv);
-        } catch (Exception $e) {
-            echo \PHP_EOL.$e->getMessage().\PHP_EOL;
+        } catch (Exception $exception) {
+            echo \PHP_EOL.$exception->getMessage().\PHP_EOL;
 
             return 1;
         }
@@ -71,8 +71,8 @@ final class Application
 
         try {
             $strategy = $this->pickStrategy($arguments->algorithm(), $config);
-        } catch (InvalidStrategyException $e) {
-            echo $e->getMessage().\PHP_EOL;
+        } catch (InvalidStrategyException $invalidStrategyException) {
+            echo $invalidStrategyException->getMessage().\PHP_EOL;
 
             return 1;
         }

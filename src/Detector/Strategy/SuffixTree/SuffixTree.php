@@ -222,6 +222,7 @@ class SuffixTree
             if (0 != $lastNode) {
                 $this->suffixLink[$lastNode] = $this->explicitNode;
             }
+
             $lastNode = $this->explicitNode;
             $this->currentNode = $this->suffixLink[$this->currentNode];
             $this->canonize($charPos);
