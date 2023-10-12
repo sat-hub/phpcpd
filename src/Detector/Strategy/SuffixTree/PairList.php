@@ -31,24 +31,22 @@ class PairList
 {
     /**
      * The current size.
-     *
-     * @var int
      */
-    private $size = 0;
+    private int $size = 0;
 
     /**
      * The array used for storing the S.
      *
      * @var S[]
      */
-    private $firstElements;
+    private array $firstElements;
 
     /**
      * The array used for storing the T.
      *
      * @var T[]
      */
-    private $secondElements;
+    private array $secondElements;
 
     public function __construct(int $initialCapacity)
     {

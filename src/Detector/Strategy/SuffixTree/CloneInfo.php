@@ -44,10 +44,8 @@ class CloneInfo
 
     /**
      * Number of occurrences of the clone.
-     *
-     * @var int
      */
-    private $occurrences;
+    private int $occurrences;
 
     /** Constructor. */
     public function __construct(int $length, int $position, int $occurrences, AbstractToken $token, PairList $otherClones)

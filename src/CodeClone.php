@@ -63,7 +63,7 @@ final class CodeClone
             $this->lines = implode(
                 '',
                 array_map(
-                    static function (string $line) use ($indent) {
+                    static function (string $line) use ($indent): string {
                         return $indent.$line;
                     },
                     \array_slice(

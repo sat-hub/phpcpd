@@ -37,43 +37,37 @@ class ApproximateCloneDetectingSuffixTree extends SuffixTree
      *
      * @var int[]
      */
-    private $leafCount = [];
+    private array $leafCount = [];
 
     /**
      * This is the distance between two entries in the {@link #cloneInfos} map.
-     *
-     * @var int
      */
-    private $INDEX_SPREAD = 10;
+    private int $INDEX_SPREAD = 10;
 
     /**
      * This map stores for each position the relevant clone infos.
      *
      * @var array<CloneInfo[]>
      */
-    private $cloneInfos = [];
+    private array $cloneInfos = [];
 
     /**
      * The maximal length of a clone. This influences the size of the
      * (quadratic) {@link #edBuffer}.
-     *
-     * @var int
      */
-    private $MAX_LENGTH = 1024;
+    private int $MAX_LENGTH = 1024;
 
     /**
      * Buffer used for calculating edit distance.
      *
      * @var array<int[]>
      */
-    private $edBuffer = [];
+    private array $edBuffer = [];
 
     /**
      * Number of units that must be equal at the start of a clone.
-     *
-     * @var int
      */
-    private $headEquality = 10;
+    private int $headEquality = 10;
 
     /**
      * Create a new suffix tree from a given word. The word given as parameter

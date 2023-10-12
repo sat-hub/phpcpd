@@ -37,7 +37,7 @@ class SuffixTreeHashTable
      *
      * @var int[]
      */
-    private $allowedSizes = [53, 97, 193, 389, 769, 1543,
+    private array $allowedSizes = [53, 97, 193, 389, 769, 1543,
         3079, 6151, 12289, 24593, 49157, 98317, 196613, 393241, 786433,
         1572869, 3145739, 6291469, 12582917, 25165843, 50331653, 100663319,
         201326611, 402653189, 805306457, 1610612741, ];
@@ -54,42 +54,36 @@ class SuffixTreeHashTable
      *
      * @var int[]
      */
-    private $keyNodes;
+    private array $keyNodes;
 
     /**
      * Storage space for the character part of the key.
      *
      * @var array<AbstractToken|null>
      */
-    private $keyChars;
+    private array $keyChars;
 
     /**
      * Storage space for the result node.
      *
      * @var int[]
      */
-    private $resultNodes;
+    private array $resultNodes;
 
     /**
      * Debug info: number of stored nodes.
-     *
-     * @var int
      */
-    private $_numStoredNodes = 0;
+    private int $_numStoredNodes = 0;
 
     /**
      * Debug info: number of calls to find so far.
-     *
-     * @var int
      */
-    private $_numFind = 0;
+    private int $_numFind = 0;
 
     /**
      * Debug info: number of collisions (i.e. wrong finds) during find so far.
-     *
-     * @var int
      */
-    private $_numColl = 0;
+    private int $_numColl = 0;
 
     /**
      * Creates a new hash table for the given number of nodes. Trying to add

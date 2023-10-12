@@ -47,10 +47,8 @@ class SuffixTree
 {
     /**
      * Infinity in this context.
-     *
-     * @var int
      */
-    protected $INFTY;
+    protected int $INFTY;
 
     /**
      * The word we are working on.
@@ -91,10 +89,8 @@ class SuffixTree
     /**
      * The next node function realized as a hash table. This corresponds to the
      * <em>g</em> function used in Ukkonen's paper.
-     *
-     * @var SuffixTreeHashTable
      */
-    protected $nextNode;
+    protected \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\SuffixTreeHashTable $nextNode;
 
     /**
      * An array giving for each node the index where the first child will be
@@ -130,19 +126,15 @@ class SuffixTree
     /**
      * The node we are currently at as a "global" variable (as it is always
      * passed unchanged). This is called <i>s</i> in Ukkonen's paper.
-     *
-     * @var int
      */
-    private $currentNode = 0;
+    private int $currentNode = 0;
 
     /**
      * Beginning of the word part of the reference pair. This is kept "global"
      * (in constrast to the end) as this is passed unchanged to all functions.
      * Ukkonen calls this <em>k</em>.
-     *
-     * @var int
      */
-    private $refWordBegin = 0;
+    private int $refWordBegin = 0;
 
     /**
      * This is the new (or old) explicit state as returned by
