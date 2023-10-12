@@ -32,6 +32,8 @@ final class Arguments
 
     private ?string $pmdCpdXmlLogfile;
 
+    private bool $githubLogOutput;
+
     private int $linesThreshold;
 
     private int $tokensThreshold;
@@ -55,12 +57,13 @@ final class Arguments
      * @param list<string> $suffixes
      * @param list<string> $exclude
      */
-    public function __construct(array $directories, array $suffixes, array $exclude, ?string $pmdCpdXmlLogfile, int $linesThreshold, int $tokensThreshold, bool $fuzzy, bool $verbose, bool $help, bool $version, ?string $algorithm, int $editDistance, int $headEquality)
+    public function __construct(array $directories, array $suffixes, array $exclude, ?string $pmdCpdXmlLogfile, bool $githubLogOutput, int $linesThreshold, int $tokensThreshold, bool $fuzzy, bool $verbose, bool $help, bool $version, ?string $algorithm, int $editDistance, int $headEquality)
     {
         $this->directories = $directories;
         $this->suffixes = $suffixes;
         $this->exclude = $exclude;
         $this->pmdCpdXmlLogfile = $pmdCpdXmlLogfile;
+        $this->githubLogOutput = $githubLogOutput;
         $this->linesThreshold = $linesThreshold;
         $this->tokensThreshold = $tokensThreshold;
         $this->fuzzy = $fuzzy;
@@ -99,6 +102,11 @@ final class Arguments
     public function pmdCpdXmlLogfile(): ?string
     {
         return $this->pmdCpdXmlLogfile;
+    }
+
+    public function githubLogOutput(): bool
+    {
+        return $this->githubLogOutput;
     }
 
     public function linesThreshold(): int
