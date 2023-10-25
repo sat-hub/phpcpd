@@ -44,10 +44,8 @@ class SuffixTreeHashTable
 
     /**
      * The size of the hash table.
-     *
-     * @var int
      */
-    private $tableSize;
+    private int $tableSize;
 
     /**
      * Storage space for the node part of the key.
