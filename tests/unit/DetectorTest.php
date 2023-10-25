@@ -20,25 +20,21 @@ use SebastianBergmann\PHPCPD\Detector\Strategy\DefaultStrategy;
 use SebastianBergmann\PHPCPD\Detector\Strategy\StrategyConfiguration;
 use Symfony\Component\Finder\Finder;
 
-/**
- * @covers \SebastianBergmann\PHPCPD\Arguments
- * @covers \SebastianBergmann\PHPCPD\ArgumentsBuilder
- * @covers \SebastianBergmann\PHPCPD\Detector\Detector
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\AbstractStrategy
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\DefaultStrategy
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\StrategyConfiguration
- *
- * @uses \SebastianBergmann\PHPCPD\CodeClone
- * @uses \SebastianBergmann\PHPCPD\CodeCloneFile
- * @uses \SebastianBergmann\PHPCPD\CodeCloneMap
- */
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Arguments::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\ArgumentsBuilder::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Detector::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\AbstractStrategy::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\DefaultStrategy::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\StrategyConfiguration::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass('\\'.\SebastianBergmann\PHPCPD\CodeClone::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass('\\'.\SebastianBergmann\PHPCPD\CodeCloneFile::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass('\\'.\SebastianBergmann\PHPCPD\CodeCloneMap::class)]
 final class DetectorTest extends TestCase
 {
     /**
-     * @dataProvider strategyProvider
-     *
      * @psalm-param AbstractStrategy $strategy
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('strategyProvider')]
     public function testDetectingSimpleClonesWorks(AbstractStrategy $strategy): void
     {
         $clones = (new Detector($strategy))->copyPasteDetection(
@@ -125,9 +121,7 @@ final class DetectorTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider strategyProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('strategyProvider')]
     public function testDetectingExactDuplicateFilesWorks(AbstractStrategy $strategy): void
     {
         $argv = [1 => '.', '--min-lines', '20', '--min-tokens', '50'];
@@ -156,9 +150,7 @@ final class DetectorTest extends TestCase
         $this->assertSame(60, $clones[0]->numberOfTokens());
     }
 
-    /**
-     * @dataProvider strategyProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('strategyProvider')]
     public function testDetectingClonesInMoreThanTwoFiles(AbstractStrategy $strategy): void
     {
         $argv = [1 => '.', '--min-lines', '20', '--min-tokens', '60'];
@@ -192,9 +184,7 @@ final class DetectorTest extends TestCase
         $this->assertSame(4, $file->startLine());
     }
 
-    /**
-     * @dataProvider strategyProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('strategyProvider')]
     public function testClonesAreIgnoredIfTheySpanLessTokensThanMinTokens(AbstractStrategy $strategy): void
     {
         $argv = [1 => '.', '--min-lines', '20', '--min-tokens', '61'];
@@ -208,9 +198,7 @@ final class DetectorTest extends TestCase
         $this->assertCount(0, $clones->clones());
     }
 
-    /**
-     * @dataProvider strategyProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('strategyProvider')]
     public function testClonesAreIgnoredIfTheySpanLessLinesThanMinLines(AbstractStrategy $strategy): void
     {
         $argv = [1 => '.', '--min-lines', '21', '--min-tokens', '60'];
@@ -224,9 +212,7 @@ final class DetectorTest extends TestCase
         $this->assertCount(0, $clones->clones());
     }
 
-    /**
-     * @dataProvider strategyProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('strategyProvider')]
     public function testFuzzyClonesAreFound(AbstractStrategy $strategy): void
     {
         $argv = [1 => '.', '--min-lines', '5', '--min-tokens', '20', '--fuzzy', 'true'];
@@ -240,9 +226,7 @@ final class DetectorTest extends TestCase
         $this->assertCount(1, $clones->clones());
     }
 
-    /**
-     * @dataProvider strategyProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('strategyProvider')]
     public function testStripComments(AbstractStrategy $strategy): void
     {
         $argv = [1 => '.', '--min-lines', '8', '--min-tokens', '10', '--fuzzy', 'true'];
@@ -273,7 +257,7 @@ final class DetectorTest extends TestCase
     /**
      * @psalm-return list<AbstractStrategy>
      */
-    public function strategyProvider(): array
+    public static function strategyProvider(): array
     {
         // Build default config.
         $argv = [1 => '.'];

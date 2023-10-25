@@ -20,26 +20,23 @@ use SebastianBergmann\PHPCPD\Detector\Strategy\StrategyConfiguration;
 use SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTreeStrategy;
 use Symfony\Component\Finder\Finder;
 
-/**
- * @covers \SebastianBergmann\PHPCPD\Arguments
- * @covers \SebastianBergmann\PHPCPD\ArgumentsBuilder
- * @covers \SebastianBergmann\PHPCPD\Detector\Detector
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\AbstractStrategy
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\DefaultStrategy
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\StrategyConfiguration
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\ApproximateCloneDetectingSuffixTree
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\CloneInfo
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\PairList
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\Sentinel
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\SuffixTree
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\SuffixTreeHashTable
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\Token
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTreeStrategy
- *
- * @uses \SebastianBergmann\PHPCPD\CodeClone
- * @uses \SebastianBergmann\PHPCPD\CodeCloneFile
- * @uses \SebastianBergmann\PHPCPD\CodeCloneMap
- */
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Arguments::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\ArgumentsBuilder::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Detector::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\AbstractStrategy::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\DefaultStrategy::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\StrategyConfiguration::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\ApproximateCloneDetectingSuffixTree::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\CloneInfo::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\PairList::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\Sentinel::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\SuffixTree::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\SuffixTreeHashTable::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\Token::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTreeStrategy::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass('\\'.\SebastianBergmann\PHPCPD\CodeClone::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass('\\'.\SebastianBergmann\PHPCPD\CodeCloneFile::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass('\\'.\SebastianBergmann\PHPCPD\CodeCloneMap::class)]
 final class EditDistanceTest extends TestCase
 {
     public function testEditDistanceWithSuffixtree(): void

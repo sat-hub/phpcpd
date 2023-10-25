@@ -18,15 +18,12 @@ use SebastianBergmann\PHPCPD\CodeClone;
 use SebastianBergmann\PHPCPD\CodeCloneFile;
 use SebastianBergmann\PHPCPD\CodeCloneMap;
 
-/**
- * @covers \SebastianBergmann\PHPCPD\Log\AbstractXmlLogger
- * @covers \SebastianBergmann\PHPCPD\Log\PMD
- *
- * @uses \SebastianBergmann\PHPCPD\CodeClone
- * @uses \SebastianBergmann\PHPCPD\CodeCloneFile
- * @uses \SebastianBergmann\PHPCPD\CodeCloneMap
- * @uses \SebastianBergmann\PHPCPD\CodeCloneMapIterator
- */
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Log\AbstractXmlLogger::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Log\PMD::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass('\\'.\SebastianBergmann\PHPCPD\CodeClone::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass('\\'.\SebastianBergmann\PHPCPD\CodeCloneFile::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass('\\'.\SebastianBergmann\PHPCPD\CodeCloneMap::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass('\\'.\SebastianBergmann\PHPCPD\CodeCloneMapIterator::class)]
 final class PMDTest extends TestCase
 {
     private string $testFile1;
