@@ -26,7 +26,7 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::CODING_STYLE,
         SetList::TYPE_DECLARATION,
         SetList::INSTANCEOF,
-        //PHPUnitSetList::PHPUNIT_100
+        PHPUnitSetList::PHPUNIT_100
         //LevelSetList::UP_TO_PHP_81
     ]);
 };
