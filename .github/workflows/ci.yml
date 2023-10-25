@@ -87,7 +87,7 @@ jobs:
   rector-php-cs-fixer-pr:
     name: PHP-CS-Fixer / Rector
     runs-on: "ubuntu-latest"
-    if: github.actor != 'dependabot[bot]'
+    if: github.actor != 'dependabot[bot]' && github.event_name == 'pull_request'
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v4"
