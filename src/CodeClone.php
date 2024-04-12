@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,14 +10,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianBergmann\PHPCPD;
 
-use function array_map;
-use function array_slice;
-use function current;
-use function file;
-use function implode;
-use function md5;
+namespace SebastianBergmann\PHPCPD;
 
 final class CodeClone
 {
@@ -36,9 +33,9 @@ final class CodeClone
         $this->add($fileA);
         $this->add($fileB);
 
-        $this->numberOfLines  = $numberOfLines;
+        $this->numberOfLines = $numberOfLines;
         $this->numberOfTokens = $numberOfTokens;
-        $this->id             = md5($this->lines());
+        $this->id = md5($this->lines());
     }
 
     public function add(CodeCloneFile $file): void
@@ -60,16 +57,16 @@ final class CodeClone
 
     public function lines(string $indent = ''): string
     {
-        if (empty($this->lines)) {
+        if ('' === $this->lines) {
             $file = current($this->files);
 
             $this->lines = implode(
                 '',
                 array_map(
-                    static function (string $line) use ($indent) {
-                        return $indent . $line;
+                    static function (string $line) use ($indent): string {
+                        return $indent.$line;
                     },
-                    array_slice(
+                    \array_slice(
                         file($file->name()),
                         $file->startLine() - 1,
                         $this->numberOfLines

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,6 +10,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree;
 
 class Token extends AbstractToken
@@ -20,9 +24,9 @@ class Token extends AbstractToken
     ) {
         $this->tokenCode = $tokenCode;
         $this->tokenName = $tokenName;
-        $this->line      = $line;
-        $this->content   = $content;
-        $this->file      = $file;
+        $this->line = $line;
+        $this->content = $content;
+        $this->file = $file;
     }
 
     public function __toString(): string

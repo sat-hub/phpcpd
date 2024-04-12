@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,21 +10,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\PHPCPD\Log;
 
-use const PHP_EOL;
-use function count;
-use function printf;
 use SebastianBergmann\PHPCPD\CodeCloneMap;
 
 final class Text
 {
     public function printResult(CodeCloneMap $clones, bool $verbose): void
     {
-        if (count($clones) > 0) {
+        if (\count($clones) > 0) {
             printf(
-                'Found %d code clones with %d duplicated lines in %d files:' . PHP_EOL . PHP_EOL,
-                count($clones),
+                'Found %d code clones with %d duplicated lines in %d files:'.\PHP_EOL.\PHP_EOL,
+                \count($clones),
                 $clones->numberOfDuplicatedLines(),
                 $clones->numberOfFilesWithClones()
             );
@@ -32,33 +33,33 @@ final class Text
 
             foreach ($clone->files() as $file) {
                 printf(
-                    '  %s%s:%d-%d%s' . PHP_EOL,
+                    '  %s%s:%d-%d%s'.\PHP_EOL,
                     $firstOccurrence ? '- ' : '  ',
                     $file->name(),
                     $file->startLine(),
                     $file->startLine() + $clone->numberOfLines(),
-                    $firstOccurrence ? ' (' . $clone->numberOfLines() . ' lines)' : ''
+                    $firstOccurrence ? ' ('.$clone->numberOfLines().' lines)' : ''
                 );
 
                 $firstOccurrence = false;
             }
 
             if ($verbose) {
-                print PHP_EOL . $clone->lines('    ');
+                echo \PHP_EOL.$clone->lines('    ');
             }
 
-            print PHP_EOL;
+            echo \PHP_EOL;
         }
 
         if ($clones->isEmpty()) {
-            print 'No code clones found.' . PHP_EOL . PHP_EOL;
+            echo 'No code clones found.'.\PHP_EOL.\PHP_EOL;
 
             return;
         }
 
         printf(
-            '%s duplicated lines out of %d total lines of code.' . PHP_EOL .
-            'Average code clone size is %d lines, the largest code clone has %d lines' . PHP_EOL . PHP_EOL,
+            '%s duplicated lines out of %d total lines of code.'.\PHP_EOL.
+            'Average code clone size is %d lines, the largest code clone has %d lines'.\PHP_EOL.\PHP_EOL,
             $clones->percentage(),
             $clones->numberOfLines(),
             $clones->averageSize(),

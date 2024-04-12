@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,18 +10,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\PHPCPD;
 
-use function count;
-use function max;
-use function sprintf;
-use Countable;
 use IteratorAggregate;
 
 /**
  * @template-implements IteratorAggregate<CodeClone>
  */
-final class CodeCloneMap implements Countable, IteratorAggregate
+final class CodeCloneMap implements \Countable, \IteratorAggregate
 {
     /**
      * @var CodeClone[]
@@ -43,7 +43,7 @@ final class CodeCloneMap implements Countable, IteratorAggregate
         $id = $clone->id();
 
         if (!isset($this->clonesById[$id])) {
-            $this->clones[]        = $clone;
+            $this->clones[] = $clone;
             $this->clonesById[$id] = $clone;
         } else {
             $existClone = $this->clonesById[$id];
@@ -53,7 +53,7 @@ final class CodeCloneMap implements Countable, IteratorAggregate
             }
         }
 
-        $this->numberOfDuplicatedLines += $clone->numberOfLines() * (count($clone->files()) - 1);
+        $this->numberOfDuplicatedLines += $clone->numberOfLines() * (\count($clone->files()) - 1);
 
         foreach ($clone->files() as $file) {
             if (!isset($this->filesWithClones[$file->name()])) {
@@ -74,11 +74,7 @@ final class CodeCloneMap implements Countable, IteratorAggregate
 
     public function percentage(): string
     {
-        if ($this->numberOfLines > 0) {
-            $percent = ($this->numberOfDuplicatedLines / $this->numberOfLines) * 100;
-        } else {
-            $percent = 100;
-        }
+        $percent = $this->numberOfLines > 0 ? ($this->numberOfDuplicatedLines / $this->numberOfLines) * 100 : 100;
 
         return sprintf('%01.2F%%', $percent);
     }
@@ -95,12 +91,12 @@ final class CodeCloneMap implements Countable, IteratorAggregate
 
     public function count(): int
     {
-        return count($this->clones);
+        return \count($this->clones);
     }
 
     public function numberOfFilesWithClones(): int
     {
-        return count($this->filesWithClones);
+        return \count($this->filesWithClones);
     }
 
     public function numberOfDuplicatedLines(): int
@@ -115,7 +111,7 @@ final class CodeCloneMap implements Countable, IteratorAggregate
 
     public function isEmpty(): bool
     {
-        return empty($this->clones);
+        return [] === $this->clones;
     }
 
     public function averageSize(): float

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,6 +10,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\PHPCPD\Detector\Strategy;
 
 use SebastianBergmann\PHPCPD\Arguments;
@@ -25,9 +29,9 @@ final class StrategyConfiguration
 
     public function __construct(Arguments $arguments)
     {
-        $this->minLines     = $arguments->linesThreshold();
-        $this->minTokens    = $arguments->tokensThreshold();
-        $this->fuzzy        = $arguments->fuzzy();
+        $this->minLines = $arguments->linesThreshold();
+        $this->minTokens = $arguments->tokensThreshold();
+        $this->fuzzy = $arguments->fuzzy();
         $this->editDistance = $arguments->editDistance();
         $this->headEquality = $arguments->headEquality();
     }

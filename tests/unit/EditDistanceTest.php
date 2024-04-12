@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHP Copy/Paste Detector (PHPCPD).
  *
@@ -7,6 +10,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\PHPCPD\Detector;
 
 use PHPUnit\Framework\TestCase;
@@ -16,37 +20,34 @@ use SebastianBergmann\PHPCPD\Detector\Strategy\StrategyConfiguration;
 use SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTreeStrategy;
 use Symfony\Component\Finder\Finder;
 
-/**
- * @covers \SebastianBergmann\PHPCPD\Arguments
- * @covers \SebastianBergmann\PHPCPD\ArgumentsBuilder
- * @covers \SebastianBergmann\PHPCPD\Detector\Detector
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\AbstractStrategy
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\DefaultStrategy
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\StrategyConfiguration
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\ApproximateCloneDetectingSuffixTree
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\CloneInfo
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\PairList
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\Sentinel
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\SuffixTree
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\SuffixTreeHashTable
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\Token
- * @covers \SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTreeStrategy
- *
- * @uses \SebastianBergmann\PHPCPD\CodeClone
- * @uses \SebastianBergmann\PHPCPD\CodeCloneFile
- * @uses \SebastianBergmann\PHPCPD\CodeCloneMap
- */
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Arguments::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\ArgumentsBuilder::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Detector::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\AbstractStrategy::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\DefaultStrategy::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\StrategyConfiguration::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\ApproximateCloneDetectingSuffixTree::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\CloneInfo::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\PairList::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\Sentinel::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\SuffixTree::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\SuffixTreeHashTable::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTree\Token::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\SebastianBergmann\PHPCPD\Detector\Strategy\SuffixTreeStrategy::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass('\\'.\SebastianBergmann\PHPCPD\CodeClone::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass('\\'.\SebastianBergmann\PHPCPD\CodeCloneFile::class)]
+#[\PHPUnit\Framework\Attributes\UsesClass('\\'.\SebastianBergmann\PHPCPD\CodeCloneMap::class)]
 final class EditDistanceTest extends TestCase
 {
     public function testEditDistanceWithSuffixtree(): void
     {
-        $argv      = [1 => '.', '--min-tokens', '60'];
-        $arguments = (new ArgumentsBuilder)->build($argv);
-        $config    = new StrategyConfiguration($arguments);
-        $strategy  = new SuffixTreeStrategy($config);
+        $argv = [1 => '.', '--min-tokens', '60'];
+        $arguments = (new ArgumentsBuilder())->build($argv);
+        $config = new StrategyConfiguration($arguments);
+        $strategy = new SuffixTreeStrategy($config);
 
         $clones = (new Detector($strategy))->copyPasteDetection(
-            (new Finder())->in(__DIR__ . '/../fixture')->name('editdistance[1|2].php')
+            (new Finder())->in(__DIR__.'/../fixture')->name('editdistance[1|2].php')
         );
 
         $clones = $clones->clones();
@@ -55,13 +56,13 @@ final class EditDistanceTest extends TestCase
 
     public function testEditDistanceWithRabinkarp(): void
     {
-        $argv      = [1 => '.', '--min-tokens', '60'];
-        $arguments = (new ArgumentsBuilder)->build($argv);
-        $config    = new StrategyConfiguration($arguments);
-        $strategy  = new DefaultStrategy($config);
+        $argv = [1 => '.', '--min-tokens', '60'];
+        $arguments = (new ArgumentsBuilder())->build($argv);
+        $config = new StrategyConfiguration($arguments);
+        $strategy = new DefaultStrategy($config);
 
         $clones = (new Detector($strategy))->copyPasteDetection(
-            (new Finder())->in(__DIR__ . '/../fixture')->name('editdistance[1|2].php')
+            (new Finder())->in(__DIR__.'/../fixture')->name('editdistance[1|2].php')
         );
 
         $clones = $clones->clones();
