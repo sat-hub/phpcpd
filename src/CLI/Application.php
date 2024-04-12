@@ -28,7 +28,7 @@ use Symfony\Component\Finder\Finder;
 
 final class Application
 {
-    private const VERSION = '7.0';
+    private const VERSION = '7.0.1';
 
     /**
      * @param list<string> $argv
@@ -101,7 +101,7 @@ final class Application
     private function printVersion(): void
     {
         printf(
-            'phpcpd %s by Sebastian Bergmann.'.\PHP_EOL,
+            'phpcpd %s by Sebastian Bergmann, Matthias Krauser, Sascha Ternes.'.\PHP_EOL,
             (new Version(self::VERSION, \dirname(__DIR__)))->asString()
         );
     }
