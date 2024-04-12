@@ -28,7 +28,7 @@ use Symfony\Component\Finder\Finder;
 
 final class Application
 {
-    private const VERSION = '7.0.1';
+    private const VERSION = '7.1.0';
 
     /**
      * @param list<string> $argv
